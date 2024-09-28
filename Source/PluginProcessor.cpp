@@ -135,15 +135,10 @@ void JX11AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-
-
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-    }
+    splitBufferByEvents(buffer, midiMessages);
 }
 
 //==============================================================================
@@ -171,30 +166,42 @@ void JX11AudioProcessor::setStateInformation (const void* data, int sizeInBytes)
     // whose contents will have been created by the getStateInformation() call.
 }
 
-void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuwffer& midiMessage)
+void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessage)
 {
     int bufferOffset = 0;
 
     for (const auto metadata : midiMessage) {
         int samplesThisSegment = metadata.samplePosition - bufferOffset;
         if (samplesThisSegment > 0) {
-            //render();
+            render(buffer, samplesThisSegment, bufferOffset);
             bufferOffset += samplesThisSegment;
         }
         // Ignore sysex MIDI message
         if (metadata.numBytes <= 3) {
             uint8_t data1 = (metadata.numBytes >= 2) ? metadata.data[1] : 0;
             uint8_t data2 = (metadata.numBytes == 3) ? metadata.data[2] : 0;
-            // handleMIDI(metadata.data[0], data1, data2);
+            handleMIDI(metadata.data[0], data1, data2);
         }
     }
 
     int samplesLastSegment = buffer.getNumSamples() - bufferOffset;
     if (samplesLastSegment > 0) {
-        //render(buffer, samplesLastSegment, bufferOffSet);
+        render(buffer, samplesLastSegment, bufferOffset);
     }
 
     midiMessage.clear();
+}
+
+void JX11AudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)
+{
+    char s[16];
+    snprintf(s, 16, "%02hhX %02hhX %02hhX", data0, data1, data2);
+    DBG(s);
+}
+
+void JX11AudioProcessor::render(juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset)
+{
+    // to be implemented... 
 }
 
 //==============================================================================
