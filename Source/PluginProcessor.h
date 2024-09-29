@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Synth.h"
 
 //==============================================================================
 /**
@@ -60,6 +61,9 @@ private:
     void splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessage); 
     void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2);
     void render (juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset);
+
+    Synth m_synth;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JX11AudioProcessor)
 };

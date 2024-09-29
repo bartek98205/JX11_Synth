@@ -17,6 +17,6 @@ public:
 	void midiMessage(uint8_t data0, uint8_t data1, uint8_t data2);
 
 private:
-	float sampleRat;
-	Voice voice;
+	float m_sampleRate;
+	Voice m_voice;
 };
