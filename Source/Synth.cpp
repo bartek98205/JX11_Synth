@@ -27,6 +27,7 @@ void Synth::deallocateResources()
 void Synth::reset()
 {
     m_voice.reset();
+    m_noiseGen.reset();
 }
 
 void Synth::render(float** outputBuffers, int sampleCount)

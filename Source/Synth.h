@@ -2,7 +2,7 @@
 
 #include <JuceHeader.h>
 #include "Voice.h"
-
+#include "NoiseGenerator.h"
 /** @brief Synth class is a main synthesizer class which makes actual sound 
 * 
 */
@@ -21,4 +21,5 @@ public:
 private:
 	float m_sampleRate;
 	Voice m_voice;
+	NoiseGenerator m_noiseGen;
 };
