@@ -26,6 +26,7 @@ void Synth::deallocateResources()
 
 void Synth::reset()
 {
+    m_voice.reset();
 }
 
 void Synth::render(float** outputBuffers, int sampleCount)
@@ -34,7 +35,7 @@ void Synth::render(float** outputBuffers, int sampleCount)
 
 void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
 {
-    switch (data0 & 0xF0) {
+    switch (data0 & 0xF0) {  /// looking only on command (only 4 highest bytes)
     
         //note off
         case 0x80:
@@ -53,5 +54,19 @@ void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
         }
     }
     
+}
+
+void Synth::noteOn(int note, int velocity)
+{
+    m_voice.note = note;
+    m_voice.velocity = velocity;
+}
+
+void Synth::noteOff(int note)
+{
+    if (note == m_voice.note) {
+        m_voice.note = 0;
+        m_voice.velocity = 0;
+    }
 }
 

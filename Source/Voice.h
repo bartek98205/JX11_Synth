@@ -6,8 +6,12 @@
 */
 struct Voice
 {
+	int note; 
+	int velocity;
+
 	void reset()
 	{
-		// to be implemented..
+		note = 0;
+		velocity = 0;
 	}
 };

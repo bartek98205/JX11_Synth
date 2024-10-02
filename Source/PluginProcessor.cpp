@@ -94,11 +94,17 @@ void JX11AudioProcessor::changeProgramName (int index, const juce::String& newNa
 void JX11AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     m_synth.allocateResources(sampleRate, samplesPerBlock);
+    reset();
 }
 
 void JX11AudioProcessor::releaseResources()
 {
     m_synth.deallocateResources();
+}
+
+void JX11AudioProcessor::reset()
+{
+    m_synth.reset();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
