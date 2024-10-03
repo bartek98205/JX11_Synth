@@ -1,18 +1,10 @@
-/*
-  ==============================================================================
-
-    Synth.cpp
-    Created: 28 Sep 2024 5:44:39pm
-    Author:  barto
-
-  ==============================================================================
-*/
 
 #include "Synth.h"
 
 Synth::Synth()
 {
     m_sampleRate = 44100.0f;
+    m_noiseGen.setNoiseType(NoiseGenerator::noiseType::juceNoise);
 }
 
 void Synth::allocateResources(double sampleRate, int samplesPerBlock)
@@ -32,6 +24,21 @@ void Synth::reset()
 
 void Synth::render(float** outputBuffers, int sampleCount)
 {
+    float* outputBufferLeft = outputBuffers[0];
+    float* outputBufferRight = outputBuffers[1];
+
+    for (int s = 0; s < sampleCount; s++) {
+        
+        float noise = m_noiseGen.nextValue();
+        float output = 0.0f;
+
+        if(m_voice.note > 0)
+            output = noise * (m_voice.velocity / 127.0f) * 0.5f;
+
+        outputBufferLeft[s] = output;
+        if (outputBufferRight != nullptr)
+            outputBufferRight[s] = output;
+    }
 }
 
 void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
