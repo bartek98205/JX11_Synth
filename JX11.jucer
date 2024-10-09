@@ -16,6 +16,7 @@
             file="Source/PluginEditor.cpp"/>
       <FILE id="v1y7cG" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="WXY3qO" name="Voice.h" compile="0" resource="0" file="Source/Voice.h"/>
+      <FILE id="pY2hcS" name="Utils.h" compile="0" resource="0" file="Source/Utils.h"/>
       <FILE id="TZy7c9" name="NoiseGenerator.h" compile="0" resource="0"
             file="Source/NoiseGenerator.h"/>
     </GROUP>

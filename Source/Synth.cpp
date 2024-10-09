@@ -1,10 +1,10 @@
 
 #include "Synth.h"
+#include "Utils.h"
 
 Synth::Synth()
 {
     m_sampleRate = 44100.0f;
-    m_noiseGen.setNoiseType(NoiseGenerator::noiseType::juceNoise);
 }
 
 void Synth::allocateResources(double sampleRate, int samplesPerBlock)
@@ -39,6 +39,9 @@ void Synth::render(float** outputBuffers, int sampleCount)
         if (outputBufferRight != nullptr)
             outputBufferRight[s] = output;
     }
+
+    protectYourEars(outputBufferLeft, sampleCount);
+    protectYourEars(outputBufferRight, sampleCount);
 }
 
 void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
