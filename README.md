@@ -1,4 +1,4 @@
-# Synthesizer Project (JUCE + C++)
+# Synthesizer Project (JUCE, C++)
 
 ## Purpose of the Project
 The primary purpose of this project is to explore and understand the fundamentals of synthesizer development, specifically focusing on sound generation, signal processing, and synthesis techniques. Through this project, I aim to:
