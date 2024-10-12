@@ -1,11 +1,12 @@
+/** @brief Synth class is a main synthesizer class which makes actual sound
+*
+*/
+
 #pragma once
 
 #include <JuceHeader.h>
 #include "Voice.h"
 #include "NoiseGenerator.h"
-/** @brief Synth class is a main synthesizer class which makes actual sound 
-* 
-*/
 
 class Synth
 {

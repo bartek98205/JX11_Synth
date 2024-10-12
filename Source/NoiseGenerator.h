@@ -1,5 +1,6 @@
 /** @ Noise Generator - based on pseudo random number generator 
 */
+
 #pragma once
 
 
@@ -10,17 +11,17 @@ public:
 
 	void reset()
 	{
-		noiseSeed = 22222;
+		m_noiseSeed = 22222;
 	}
 
 	float nextValue()
 	{
-		noiseSeed = noiseSeed * 196314165 + 907633515;
-		int temp = int(noiseSeed >> 7) - 16777216;
+		m_noiseSeed = m_noiseSeed * 196314165 + 907633515;
+		int temp = int(m_noiseSeed >> 7) - 16777216;
 		return float(temp) / 16777216.0f;
 	}
 
 private:
-	unsigned int noiseSeed;
+	unsigned int m_noiseSeed;
 
 };
