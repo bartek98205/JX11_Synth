@@ -9,23 +9,24 @@ const float TWO_PI = 6.2831853071795864f;
 class Oscillator
 {
 public:
-	float m_amplitude;
-	float m_freq;
-	float m_phaseOffset;
-	float m_sampleRate;
-	int m_sampleIndex;
+	float amplitude;
+	float phase;
+	float inc;
 
 	float getNextSample()
 	{
-		float nextSample =  m_amplitude * std::sin(
-			TWO_PI * m_freq * m_sampleIndex /m_sampleRate + m_phaseOffset);
+		phase += inc;
+		if (phase >= 1.0f)
+			phase -= 1.0f;
+
+		float nextSample =  amplitude * std::sin(
+			TWO_PI * phase);
 		
-		++m_sampleRate;
 		return nextSample;
 	}
 
 	void reset()
 	{
-		m_sampleIndex = 0;
+		phase = 0;
 	}
 };

@@ -8,7 +8,6 @@ class NoiseGenerator
 {
 public:
 
-
 	void reset()
 	{
 		m_noiseSeed = 22222;

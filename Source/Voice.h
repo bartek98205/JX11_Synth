@@ -8,17 +8,17 @@
 
 struct Voice
 {
-	int m_note; 
-	Oscillator m_osc;
+	int note; 
+	Oscillator osc;
 
 	void reset()
 	{
-		m_note = 0;
-		m_osc.resest();
+		note = 0;
+		osc.reset();
 	}
 
 	float render()
 	{
-		return m_osc.getNextSample();
+		return osc.getNextSample();
 	}
 };
