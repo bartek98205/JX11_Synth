@@ -164,7 +164,7 @@ void JX11AudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 void JX11AudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
 }
-
+ 
 void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessage)
 {
     int bufferOffset = 0;

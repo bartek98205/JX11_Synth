@@ -19,14 +19,13 @@ public:
 		if (phase >= 1.0f)
 			phase -= 1.0f;
 
-		float nextSample =  amplitude * std::sin(
-			TWO_PI * phase);
+		float nextSample =  amplitude * std::sin(TWO_PI * phase);
 		
 		return nextSample;
 	}
 
 	void reset()
 	{
-		phase = 0;
+		phase = 1.5707963268f;
 	}
 };
