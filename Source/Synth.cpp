@@ -80,7 +80,8 @@ void Synth::noteOn(int note, int velocity)
     m_voice.osc.amplitude = (velocity / 127.0f) * 0.5f;
     m_voice.osc.inc = freq / m_sampleRate;
     m_voice.osc.reset();
-
+    m_voice.osc.freq = freq;
+    m_voice.osc.sampleRate = m_sampleRate;
 }
 
 void Synth::noteOff(int note)
