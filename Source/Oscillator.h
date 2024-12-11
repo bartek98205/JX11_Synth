@@ -5,73 +5,70 @@
 #pragma once
 
 const float TWO_PI = 6.2831853071795864f;
+const float PI = 3.1415926535897932f;
+const float PI_OVER_4 = 0.7853981633974483f;
 
 class Oscillator
 {
 private :
-	float m_sin0;
-	float m_sin1;
-	float m_dsin;
+	float inc;
+	float phase;
+	float phaseMax;
 
 public:
-	float amplitude;
-	float phase;
-	float inc;
+	float amplitude = 1.0f;;
+	float period = 0.0f;
 
-	float freq;
-	float sampleRate;
-	float phaseBL;
-
-	float nextBandlimitedSample()
-	{
-		phaseBL += inc;
-		if (phaseBL >= 1.0f) {
-			phaseBL -=1.0f;
-		}
-
-		float output = 0.0f;
-		float nyquist = sampleRate / 2.0f;
-		float h = freq;
-		float i = 1.0f;
-		float m = 0.6366197724f;
-		while (h < nyquist) {
-			output += m * std::sin(TWO_PI * phaseBL * i) / i;
-			h += freq;
-			i += 1.0f;
-			m = -m;
-		}
-		return output;
-	}
 
 	float getNextSample()
 	{
-		// TODO zaimplementowaæ mo¿liwoœæ przejsca z sinus waveform na pi³okszta³tn¹ 
-		// digital resonator
+		float output = 0.0f;
+
+		phase += inc;
 		
-		// sinwave// 
-		/*float sinx = m_dsin * m_sin0 - m_sin1;
-		m_sin1 = m_sin0;
-		m_sin0 = sinx;
-		return sinx;*/
+		/*
+		* When phase <= PI_OVER_4 is true,it means the oscillator should start a new impulse. Recall that
+		*phase is measured in samples times π. If the phase is less than π/4, the end of the
+		*previous impulse is reached and you need to start a new one. The oscillator enters
+		*this if statement once per period, and also immediately when a new note starts 
+		*/
+		if (phase <= PI_OVER_4) {
 
-		phase += inc; 
+			/*
+			* Find wherethemidpointwill be between the peak that was just finished and the next
+			*one. This depends on the period. If period is 100 samples, the next midpoint will be
+			*50 samples	into the future.
+			*/
+			float halfPeriod = period / 2.0f;
+			phaseMax = std::floor(0.5f + halfPeriod) - 0.5f;
+			phaseMax *= PI;
+			inc = phaseMax / halfPeriod;
+			phase = -phase;
+		
+			//Caluclate sinc fn
+			
+			if (phase * phase > 1e-9) {
+				output = amplitude * std::sin(phase) / phase;
+			} else {
+				output = amplitude;
+			}
+		} else { // current sample is somewhere between the previous peak and the next
+			
+			if (phase > phaseMax) { ///  outputting the sinc function backwards
+				phase = phaseMax + phaseMax - phase;
+				inc = -inc;
+			}
 
-		if(phase >= 1.0f)
-			phase -= 1.0f;
+			// Calculate sinc fn
 
-		return amplitude * nextBandlimitedSample();;
+			output = amplitude * std::sin(phase) / phase;
+		}
+		return output;
 	}
 
 	void reset()
 	{
 		phase = 0.0f;
-		phaseBL = -0.5f;
-		// sinwave //
-		/*phase = 1.5707963268f;
-		// digital resonator
-		m_sin0 = amplitude * std::sin(phase * TWO_PI);
-		m_sin1 = amplitude * std::sin((phase - inc) * TWO_PI);
-		m_dsin = 2.0f * std::cos(inc*TWO_PI);
-		*/
+		inc = 0.0f;
 	}
 };
